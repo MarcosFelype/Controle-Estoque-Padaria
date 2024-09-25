@@ -24,5 +24,6 @@ go.work.sum
 # env file
 .env
 
-#
+# arquivos adicionados por mim
 go.mod
+go.sum

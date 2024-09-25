@@ -7,13 +7,13 @@ import (
 	"padaria/src/core/interfaces/repository"
 )
 
-var _ primary.ProductManager = (*ProcuctServices)(nil) //força o adaptador a utilizar a porta primária
+var _ primary.ProductManager = (*ProductServices)(nil) //força o adaptador a utilizar a porta primária
 
-type ProcuctServices struct {
+type ProductServices struct {
 	productRepository repository.ProductLoader
 }
 
-func (service ProcuctServices) RegisterProduct(product domain.Product) (int, error) { //implementação do método da porta primária
+func (service ProductServices) RegisterProduct(product domain.Product) (int, error) { //implementação do método da porta primária
 	productID, err := service.productRepository.InsertProduct(product) //chamando a porta secundária
 	//a inserção do produto efetivamente será abordada a seguir
 	if err != nil {
@@ -22,4 +22,10 @@ func (service ProcuctServices) RegisterProduct(product domain.Product) (int, err
 	}
 
 	return productID, nil
+}
+
+func NewProductServices(productRepository repository.ProductLoader) *ProductServices {
+	return &ProductServices{
+		productRepository: productRepository,
+	}
 }

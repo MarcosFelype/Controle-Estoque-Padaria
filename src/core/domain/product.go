@@ -15,7 +15,7 @@ func (p Product) Id() int {
 	return p.id
 }
 
-func (p Product) Nome() string {
+func (p Product) Name() string {
 	return p.name
 }
 
@@ -31,7 +31,7 @@ func (p Product) ExpirationDate() time.Time {
 	return p.expiration_date
 }
 
-func newProduct(id int, name string, price float32, code string, expiration_date time.Time) *Product {
+func NewProduct(id int, name string, price float32, code string, expiration_date time.Time) *Product {
 	return &Product{
 		id:              id,
 		name:            name,
