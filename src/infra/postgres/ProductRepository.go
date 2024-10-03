@@ -4,6 +4,7 @@ import (
 	"log"
 	"padaria/src/core/domain"
 	"padaria/src/core/interfaces/repository"
+	"padaria/src/infra/postgres/dto"
 )
 
 var _ repository.ProductLoader = (*ProductRepository)(nil)
@@ -34,6 +35,36 @@ func (repo ProductRepository) InsertProduct(product domain.Product) (int, error)
 	}
 
 	return productID, nil
+}
+
+func (repo ProductRepository) SelectProducts() ([]domain.Product, error) {
+	conn, err := repo.getConnection() //verificar o retorno de getConnection
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	defer repo.closeConnection(conn)
+
+	query := `SELECT 
+				ID AS PRODUCT_ID, 
+				NAME AS PRODUCT_NAME,
+				CODE AS PRODUCT_CODE,
+				PRICE AS PRODUCT_PRICE,
+				EXPIRATION_DATE AS PRODUCT_EXPIRATION_DATE
+			  FROM PRODUCT`
+	var productDTOList []dto.Product
+	err = conn.Select(&productDTOList, query)
+	if err != nil {
+		log.Print(err)
+		return nil, err
+	}
+
+	var products []domain.Product
+	for _, productDTO := range productDTOList {
+		products = append(products, *productDTO.ToDomain())
+	}
+
+	return products, nil
 }
 
 func NewProductRepository(manager connectorManager) *ProductRepository {

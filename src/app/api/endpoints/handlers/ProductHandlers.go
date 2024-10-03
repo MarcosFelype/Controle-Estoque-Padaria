@@ -36,6 +36,23 @@ func (handler ProductHandlers) PostProduct(c echo.Context) error { //o pacote ec
 	return c.JSON(http.StatusCreated, &response.Created{ID: productId})
 }
 
+func (handler ProductHandlers) GetProducts(c echo.Context) error {
+	products, err := handler.productService.ListProducts()
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.NewError(
+			"Oops! Parece que o serviço de dados está indisponível.",
+			http.StatusBadRequest,
+		))
+	}
+
+	var productDTOList []response.Product
+	for _, product := range products {
+		productDTOList = append(productDTOList, *response.NewProduct(product))
+	}
+	return c.JSON(http.StatusOK, productDTOList)
+}
+
 func NewProductHandlers(productService primary.ProductManager) *ProductHandlers {
 	return &ProductHandlers{
 		productService: productService}
