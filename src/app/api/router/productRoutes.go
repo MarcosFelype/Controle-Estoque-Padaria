@@ -12,4 +12,6 @@ func loadProductRotes(api *echo.Group) {
 	productHandlers := dicontainter.GetProductHandlers()
 
 	productGroup.POST("/new", productHandlers.PostProduct) //função dentro de outra função
+
+	productGroup.GET("", productHandlers.GetProducts)
 }
