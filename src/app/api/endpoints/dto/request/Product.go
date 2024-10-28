@@ -8,7 +8,7 @@ import (
 )
 
 type Product struct {
-	//uriliza de bandeiras em go (associar os atribuots de um json aos atributos de produto)
+	//utiliza de bandeiras em go (associar os atribuots de um json aos atributos de produto)
 	Name  string  `json:"name"`
 	Code  string  `json:"code"`
 	Price float32 `json:"price"`

@@ -57,7 +57,7 @@ func (handler ProductHandlers) GetProducts(c echo.Context) error {
 func (handler ProductHandlers) PutProduct(c echo.Context) error {
 	productId, err := strconv.Atoi(c.Param("productId"))
 
-	var productDTO request.Product
+	var productDTO request.Product //recebe um dto, formato de JSON
 
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, response.NewError(
@@ -67,6 +67,7 @@ func (handler ProductHandlers) PutProduct(c echo.Context) error {
 	}
 
 	product := productDTO.ToDomainWithId(productId)
+	//cria o produto propriamente dito (domain de produto)
 
 	err = handler.productService.EditProduct(*product)
 
