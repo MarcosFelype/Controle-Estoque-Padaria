@@ -6,6 +6,7 @@ import (
 	"padaria/src/app/api/endpoints/dto/request"
 	"padaria/src/app/api/endpoints/dto/response"
 	"padaria/src/core/interfaces/primary"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -51,6 +52,56 @@ func (handler ProductHandlers) GetProducts(c echo.Context) error {
 		productDTOList = append(productDTOList, *response.NewProduct(product))
 	}
 	return c.JSON(http.StatusOK, productDTOList)
+}
+
+func (handler ProductHandlers) PutProduct(c echo.Context) error {
+	productId, err := strconv.Atoi(c.Param("productId"))
+
+	var productDTO request.Product //recebe um dto, formato de JSON
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.NewError(
+			"O id desse produto não pôde ser processado.",
+			http.StatusBadRequest,
+		))
+	}
+
+	product := productDTO.ToDomainWithId(productId)
+	//cria o produto propriamente dito (domain de produto)
+
+	err = handler.productService.EditProduct(*product)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.NewError(
+			"Oops! Parece que o serviço de dados está indisponível.",
+			http.StatusBadRequest,
+		))
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}
+
+func (handler ProductHandlers) DeleteProduct(c echo.Context) error {
+
+	productId, err := strconv.Atoi(c.Param("productId"))
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.NewError(
+			"O id desse produto não pôde ser processado.",
+			http.StatusBadRequest,
+		))
+	}
+
+	err = handler.productService.RemoveProduct(productId)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.NewError(
+			"Oops! Parece que o serviço de dados está indisponível.",
+			http.StatusBadRequest,
+		))
+	}
+
+	return c.NoContent(http.StatusNoContent)
 }
 
 func NewProductHandlers(productService primary.ProductManager) *ProductHandlers {

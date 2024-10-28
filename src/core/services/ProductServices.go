@@ -35,6 +35,26 @@ func (service ProductServices) ListProducts() ([]domain.Product, error) {
 	return products, nil
 }
 
+func (service ProductServices) EditProduct(product domain.Product) error {
+	err := service.productRepository.UpdateProduct(product)
+
+	if err != nil {
+		log.Print(err)
+		return err
+	}
+	return nil
+}
+
+func (service ProductServices) RemoveProduct(productId int) error {
+	err := service.productRepository.DeleteProduct(productId)
+
+	if err != nil {
+		log.Print(err)
+		return err
+	}
+	return nil
+}
+
 func NewProductServices(productRepository repository.ProductLoader) *ProductServices {
 	return &ProductServices{
 		productRepository: productRepository,

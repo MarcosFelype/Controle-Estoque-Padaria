@@ -14,4 +14,8 @@ func loadProductRotes(api *echo.Group) {
 	productGroup.POST("/new", productHandlers.PostProduct) //função dentro de outra função
 
 	productGroup.GET("", productHandlers.GetProducts)
+
+	productGroup.PUT("/:productId/edit", productHandlers.PutProduct)
+
+	productGroup.DELETE("/:productId/remove", productHandlers.DeleteProduct)
 }
