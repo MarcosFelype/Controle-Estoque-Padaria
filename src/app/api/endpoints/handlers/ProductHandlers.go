@@ -15,7 +15,18 @@ type ProductHandlers struct {
 	productService primary.ProductManager
 }
 
-// Função para disponibilizar a função RegisterProduct, de primary
+// PostProduct godoc
+// @Summary      Register a product in database
+// @Description  This resources is responsible for registering into database
+// @Tags         Product
+// @Accept       json
+// @Produce      json
+// @Param productBody body request.Product true "Product Body"
+// @Success      200  {object}  response.Created
+// @Failure      400  {object}  response.Error
+// @Failure      404  {object}  response.Error
+// @Failure      500  {object}  response.Error
+// @Router       /product/new [post]
 func (handler ProductHandlers) PostProduct(c echo.Context) error { //o pacote echo apresenta o resultado de uma requisição
 
 	var product request.Product
@@ -28,9 +39,9 @@ func (handler ProductHandlers) PostProduct(c echo.Context) error { //o pacote ec
 
 	productId, registerErr := handler.productService.RegisterProduct(*product.ToDomain())
 	if registerErr != nil {
-		return c.JSON(http.StatusBadRequest, response.NewError(
+		return c.JSON(http.StatusInternalServerError, response.NewError(
 			"Oops! Parece que o serviço de dados está indisponível.",
-			http.StatusBadRequest,
+			http.StatusInternalServerError,
 		))
 	}
 

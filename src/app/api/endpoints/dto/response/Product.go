@@ -10,7 +10,7 @@ type Product struct {
 	Name           string    `json:"name"`
 	Code           string    `json:"code"`
 	Price          float32   `json:"price"`
-	ExoirationDate time.Time `json:"expiration_date"`
+	ExpirationDate time.Time `json:"expiration_date"`
 }
 
 func NewProduct(product domain.Product) *Product {
@@ -19,6 +19,6 @@ func NewProduct(product domain.Product) *Product {
 		Name:           product.Name(),
 		Code:           product.Code(),
 		Price:          product.Price(),
-		ExoirationDate: product.ExpirationDate(),
+		ExpirationDate: product.ExpirationDate(),
 	}
 }

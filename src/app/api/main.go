@@ -2,12 +2,28 @@ package main
 
 import (
 	"fmt"
+	_ "github.com/swaggo/echo-swagger"
 	"log"
+	_ "padaria/src/app/api/docs"
 	"padaria/src/app/api/router"
 	"padaria/src/app/config"
 	"padaria/src/infra/postgres"
 )
 
+// @title Padaria API
+// @version 1.0
+// @description This is an example backery server
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost
+// @BasePath /api
 func main() {
 	setupPostgres()
 	serverAddress(config.ServerHost, config.ServerPort)
